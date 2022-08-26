@@ -501,6 +501,15 @@ public class ResourceHttpRequestHandlerTests {
 	}
 
 	@Test
+	public void updatesResponseWithIfNoneMatchHeader() throws Exception {
+		this.request.setAttribute(HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE, "foo.css");
+		this.request.addHeader("If-Modified-Since", resourceLastModified("test/foo.css"));
+		this.request.addHeader("If-None-Match", "etag value");
+		this.handler.handleRequest(this.request, this.response);
+		assertThat(this.response.getStatus()).isEqualTo(HttpServletResponse.SC_NOT_MODIFIED);
+	}
+
+	@Test
 	public void modified() throws Exception {
 		this.request.setAttribute(HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE, "foo.css");
 		this.request.addHeader("If-Modified-Since", resourceLastModified("test/foo.css") / 1000 * 1000 - 1);
