@@ -23,6 +23,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.junit.jupiter.api.Test;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.util.StreamUtils;
 import org.springframework.web.testfixture.servlet.MockHttpServletRequest;
@@ -266,4 +267,22 @@ public class ShallowEtagHeaderFilterTests {
 		assertThat(response.getContentAsByteArray()).as("Invalid content").isEqualTo(responseBody);
 	}
 
+	@Test
+	public void noMatchShouldReturn200OK() throws Exception {
+		final MockHttpServletRequest request = new MockHttpServletRequest("GET", "/hotels");
+		MockHttpServletResponse response = new MockHttpServletResponse();
+		response.setStatus(HttpStatus.NOT_MODIFIED.value());
+
+		final byte[] responseBody = "Hello World".getBytes(StandardCharsets.UTF_8);
+		FilterChain filterChain = (filterRequest, filterResponse) -> {
+			assertThat(filterRequest).as("Invalid request passed").isEqualTo(request);
+			((HttpServletResponse) filterResponse).setStatus(HttpServletResponse.SC_OK);
+			FileCopyUtils.copy(responseBody, filterResponse.getOutputStream());
+			filterResponse.flushBuffer();
+		};
+		assertThat(response.getStatus()).isEqualTo(304);
+		filter.doFilter(request, response, filterChain);
+
+		assertThat(response.getStatus()).isEqualTo(200);
+	}
 }
