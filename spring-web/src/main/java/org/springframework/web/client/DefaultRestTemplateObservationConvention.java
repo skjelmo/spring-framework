@@ -43,9 +43,8 @@ public class DefaultRestTemplateObservationConvention implements RestTemplateObs
 	private static final KeyValue EXCEPTION_NONE = KeyValue.of(RestTemplateObservation.LowCardinalityKeyNames.EXCEPTION, "none");
 
 	private static final KeyValue OUTCOME_UNKNOWN = KeyValue.of(RestTemplateObservation.LowCardinalityKeyNames.OUTCOME, "UNKNOWN");
-	
-	private static final KeyValue URI_EXPANDED_NONE = KeyValue.of(RestTemplateObservation.HighCardinalityKeyNames.URI_EXPANDED, "none");
 
+	private static final KeyValue URI_EXPANDED_NONE = KeyValue.of(RestTemplateObservation.HighCardinalityKeyNames.URI_EXPANDED, "none");
 
 
 	@Override
@@ -132,7 +131,5 @@ public class DefaultRestTemplateObservationConvention implements RestTemplateObs
 		}
 		return KeyValue.of(RestTemplateObservation.HighCardinalityKeyNames.CLIENT_NAME, host);
 	}
-
-
 
 }

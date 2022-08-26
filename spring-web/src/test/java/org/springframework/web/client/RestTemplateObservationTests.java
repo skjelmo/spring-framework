@@ -108,7 +108,7 @@ public class RestTemplateObservationTests {
 
 		template.execute("https://example.org", GET, null, null);
 
-		assertThatHttpObservation().hasLowCardinalityKeyValue("outcome", "SUCCESS");
+		assertThatHttpObservation().hasLowCardinalityKeyValue("outcome", "SUCCESSFUL");
 	}
 
 	@Test
